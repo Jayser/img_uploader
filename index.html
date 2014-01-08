@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>File Uploader!</title>
+	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="js/jquery.fileapi/jcrop/jquery.jcrop.min.css"></link>
+</head>
+<body>
+	<div id="wrap" class="wrapper">
+		<div id="content">
+			<select 
+				name="photo"
+				id="img-uploader"
+				placeholder="Изображения"
+				class="form-control"
+				data-iu-width="100" 
+				data-iu-height="100"
+				data-iu-min-dimension="100x100"
+				data-iu-max-dimension="640x640"
+				data-iu-type="3"
+				data-iu-url="http://images.cooper.loc/upload.php"
+				style="display:none;">
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+			</select>
+		</div>
+	</div>
+
+	<!-- jQuery MODAL -->
+	<div class="jQpup"></div>
+
+	<!-- jQuery -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+	<!-- jQuery TEMPLATE -->
+	<script src="js/jquery.tmpl.min.js"></script>
+
+	<!-- FileAPI // TEMPLATE FOR IMG UPLOADER -->
+	<script type="text/x-jquery-tmpl" id="img-uploader-template">
+	    <div class="img-placeholder img-uploader offset-r-15 offset-b-15" data-iu-id="${id}">
+	        <i class="img-uploader-delete">X</i>
+	        <span class="inline-block relative overflow-hidden">
+	            <input type="file" name="content" class="type-file" />
+	            <img src="${url}" alt="">
+	        </span>
+	    </div>
+	</script>
+
+	<!-- FileAPI // https://github.com/RubaXa/jquery.fileapi/ -->
+	<script>
+	    window.FileAPI = {
+	          debug: false, // debug mode
+	          staticPath: '/js/jquery.fileapi/FileAPI/' // path to *.swf
+	    };
+	</script>
+	<script src="js/jquery.fileapi/FileAPI/FileAPI.min.js"></script>
+	<script src="js/jquery.fileapi/jquery.fileapi.min.js"></script>
+
+	<!-- FileAPI CROP -->
+	<script src="js/jquery.fileapi/jcrop/jquery.jcrop.min.js"></script>
+
+	<!-- Custom JS -->
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
