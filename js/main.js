@@ -62,10 +62,10 @@ $(function () {
                     type:       _$el.attr('data-iu-type'),   // Get attr from select
                     url:       _$el.attr('data-iu-url'),
                     width:     _$el.attr('data-iu-width'),
-                    minWidth:  _$el.attr('data-iu-min-dimension').split('x')[0],
-                    minHeight: _$el.attr('data-iu-min-dimension').split('x')[1],
-                    maxWidth:  _$el.attr('data-iu-max-dimension').split('x')[0],
-                    maxHeight: _$el.attr('data-iu-max-dimension').split('x')[1],
+                    minWidth:  _$el.attr('data-iu-min-dimension').split('x')[0] || 0,
+                    minHeight: _$el.attr('data-iu-min-dimension').split('x')[1] || 0,
+                    maxWidth:  _$el.attr('data-iu-max-dimension').split('x')[0] || 0,
+                    maxHeight: _$el.attr('data-iu-max-dimension').split('x')[1] || 0,
                     height:    _$el.attr('data-iu-height'),
                     change:    ''                          // id for find option in select
                 },
