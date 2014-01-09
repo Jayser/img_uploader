@@ -54,29 +54,29 @@
 $(function () {
 
     // USE TECHNICAL@ OPEN MODULE IMG-UPLOADER
-    var imgUploader = function(){
+    var imgUploader = function($select, uploadID){
 
-        var _$el  = $('#img-uploader'),                 // Select
+        var _$el  = $select,                 // Select
             _$tpl = $('#img-uploader-template'),        // Template with img
             _attr = {
-                    type:       _$el.attr('data-iu-type'),   // Get attr from select
+                    type:      _$el.attr('data-iu-type'),   // Get attr from select
                     url:       _$el.attr('data-iu-url'),
                     width:     _$el.attr('data-iu-width'),
+                    height:    _$el.attr('data-iu-height'),
                     minWidth:  _$el.attr('data-iu-min-dimension').split('x')[0] || 0,
                     minHeight: _$el.attr('data-iu-min-dimension').split('x')[1] || 0,
                     maxWidth:  _$el.attr('data-iu-max-dimension').split('x')[0] || 0,
                     maxHeight: _$el.attr('data-iu-max-dimension').split('x')[1] || 0,
-                    height:    _$el.attr('data-iu-height'),
                     change:    ''                          // id for find option in select
                 },
-            _$to  = $('<div></div>',{ class:'clearfix', id:'fileApiUpload' }); // Container for append
+            _$to  = $('<div></div>',{ class:'clearfix', id: uploadID }); // Container for append
 
          $(_$el).after(_$to);
 
         // Private method _
         var _events = function (){
             
-            var $clear   = $('.img-uploader-delete'),
+            var $clear   = _$to.find('.img-uploader-delete'),
                 $gallery = _$to.find('.img-uploader');
 
             $clear.on('click', function (){
@@ -98,6 +98,8 @@ $(function () {
             _$to.empty();
 
             _$el.find('option').each(function (index, item){
+
+                var index = _$el.attr('id') + index;
                 
                 if ($.isNumeric($(item).val())) $(item).val('');
                 _$tpl.tmpl( { id: index, url: $(item).val() } ).appendTo( _$to );
@@ -177,6 +179,9 @@ $(function () {
 
         });
 
-    }();
+    };
+    // imgUploader( $select, 'customName');
+    imgUploader( $('#img-uploader'), 'fileApiUpload');
+    imgUploader( $('#img-uploader-logo'),'fileApiUpload2');
 
 });
