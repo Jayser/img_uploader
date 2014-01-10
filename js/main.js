@@ -165,7 +165,6 @@ $(function () {
                     bgColor: '#fff',
                     maxSize: [ _attr.maxWidth, _attr.maxHeight ],
                     minSize: [ _attr.minWidth, _attr.minHeight],
-                    aspectRatio:0,
                     selection: '90%',
                     onSelect: function (coords){
                         _$to.fileapi('crop', file, coords);
