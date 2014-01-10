@@ -54,22 +54,22 @@
 $(function () {
 
     // USE TECHNICAL@ OPEN MODULE IMG-UPLOADER
-    var imgUploader = function($select, uploadID){
+    var imgUploader = function(option){
 
-        var _$el  = $select,                 // Select
+        var _$el  = option.el,                 // Select
             _$tpl = $('#img-uploader-template'),        // Template with img
             _attr = {
                     type:      _$el.attr('data-iu-type'),   // Get attr from select
                     url:       _$el.attr('data-iu-url'),
-                    width:     _$el.attr('data-iu-width'),
-                    height:    _$el.attr('data-iu-height'),
+                    width:     _$el.attr('data-iu-dimension').split('x')[0]     || 0,
+                    height:    _$el.attr('data-iu-dimension').split('x')[1]     || 0,
                     minWidth:  _$el.attr('data-iu-min-dimension').split('x')[0] || 0,
                     minHeight: _$el.attr('data-iu-min-dimension').split('x')[1] || 0,
                     maxWidth:  _$el.attr('data-iu-max-dimension').split('x')[0] || 0,
                     maxHeight: _$el.attr('data-iu-max-dimension').split('x')[1] || 0,
                     change:    ''                          // id for find option in select
                 },
-            _$to  = $('<div></div>',{ class:'clearfix', id: uploadID }); // Container for append
+            _$to  = $('<div></div>',{ class:'clearfix', id: 'fileApiUpload' + _$el.attr('id') }); // Container for append
 
          $(_$el).after(_$to);
 
@@ -125,17 +125,15 @@ $(function () {
 
         _gallery();
 
-        _$to.fileapi({
+
+        var fileAPI = {
             url: _attr.url,
             data: { 'typeId': _attr.type, 'siteId': 1 },
             multiple: false,
-            imageSize: {
-                minWidth: 50,
-                minHeight: 50
-            },
             accept: 'image/*',
             clearOnComplete: true,
-            maxSize: FileAPI.MB*10, // max file size
+            autoUpload: true,
+            maxSize: FileAPI.MB*10,
             onComplete: function(evt, uiEvt) {
                 var msg = uiEvt.result.message;
                 if( uiEvt.result.code === 'success' ){
@@ -144,44 +142,50 @@ $(function () {
                 } else {
                     alert(msg);
                 }
-            },
-            // CROP
-            onSelect: function (evt, ui){
+            }
+        };
+        var crop = function (evt, ui){
 
-                var file = ui.files[0];
-                if( file ){
+            var file = ui.files[0];
+            if( file ){
 
-                    var popup  = '<div class="js-img"></div>';
-                        popup += '<div class="text-center offset-t-15">';
-                        popup +=      '<div class="js-upload attr-popup-close">Upload</div>';
-                        popup += '</div>';
+                var popup  = '<div class="js-img"></div>';
+                    popup += '<div class="text-center offset-t-15">';
+                    popup +=      '<div class="js-upload attr-popup-close">Загрузить</div>';
+                    popup += '</div>';
 
-                    $(".jQpup").empty().append(popup).jQpup();
+                $(".jQpup").empty().append(popup).jQpup();
 
-                    $('.js-upload').on('click', function (){
-                        _$to.fileapi('upload');
-                    });
+                $('.js-upload').on('click', function (){
+                    _$to.fileapi('upload');
+                });
 
-                    $('.js-img').cropper({
-                        file: file,
-                        bgColor: '#fff',
-                        maxSize: [ _attr.maxWidth, _attr.maxHeight ],
-                        minSize: [ _attr.minWidth, _attr.minHeight],
-                        selection: '90%',
-                        onSelect: function (coords){
-                            _$to.fileapi('crop', file, coords);
-                        }
-                    });
-
-                }
+                $('.js-img').cropper({
+                    file: file,
+                    bgColor: '#fff',
+                    maxSize: [ _attr.maxWidth, _attr.maxHeight ],
+                    minSize: [ _attr.minWidth, _attr.minHeight],
+                    aspectRatio:0,
+                    selection: '90%',
+                    onSelect: function (coords){
+                        _$to.fileapi('crop', file, coords);
+                    }
+                });
 
             }
 
-        });
+        };
+
+        if( option.crop ){
+            fileAPI.autoUpload = false;
+            fileAPI.onSelect = crop;
+            _$to.fileapi(fileAPI);
+        } else {
+            _$to.fileapi(fileAPI);
+        }
 
     };
     // imgUploader( $select, 'customName');
-    imgUploader( $('#img-uploader'), 'fileApiUpload');
-    imgUploader( $('#img-uploader-logo'),'fileApiUpload2');
-
+    imgUploader({ el:  $('#img-uploader'), crop: true });
+    imgUploader({ el: $('#img-uploader-logo') });
 });
